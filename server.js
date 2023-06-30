@@ -17,19 +17,24 @@ app.post('/api/goal', (req, res) => {
   res.sendStatus(200);
 });
 
+app.get('/api/goal', (req, res) => {
+  console.log('API request: GET /api/goal');
+  res.json(goalNumber);
+});
+
 app.get('/api/players', (req, res) => {
   console.log('API request: GET /api/players');
   res.json(players);
 });
 
 app.post('/api/players', (req, res) => {
-  const { name, guess } = req.body;
-  const player = { id: uuidv4(), name, guess };
-  players.push(player);
-  io.emit('playersUpdated', players); // Emit the updated players array to all connected clients
-  console.log('API request: POST /api/players', player);
-  res.sendStatus(200);
-});
+    const { name, guess } = req.body;
+    const player = { id: uuidv4(), name, guess };
+    players.push(player);
+    io.emit('playersUpdated', players); // Emit the updated players array to all connected clients
+    console.log('API request: POST /api/players', player);
+    res.sendStatus(200);
+  });  
 
 app.get('/api/topUsers', (req, res) => {
   const sortedPlayers = [...players].sort((a, b) => a.guess - b.guess);
